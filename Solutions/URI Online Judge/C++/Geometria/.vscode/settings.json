@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "iomanip": "cpp",
+        "xiosbase": "cpp",
+        "cmath": "cpp",
+        "ostream": "cpp",
+        "ios": "cpp"
+    }
+}
