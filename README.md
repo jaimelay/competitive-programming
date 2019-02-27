@@ -1,2 +1,2 @@
-# competitive-programming
+# Competitive Programming
 Conteúdo de Maratonas de Programação
