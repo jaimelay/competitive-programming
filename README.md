@@ -17,3 +17,4 @@
 * [UVa Online Judge](https://uva.onlinejudge.org/)
 * [Codeforces](http://codeforces.com)
 * [A2 Online Judge](https://a2oj.com/)
+* [Project Euler](https://projecteuler.net/)
