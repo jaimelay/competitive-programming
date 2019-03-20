@@ -1,5 +1,5 @@
 # Reference
-#### Templates, Codes & Tricks.
+## Template
 * [Template](https://github.com/jaimelay/competitive-programming/blob/master/Reference/template.cpp)
 ## Ad-Hoc
 ## Estrutura de Dados
