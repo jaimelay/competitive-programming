@@ -1,46 +1,35 @@
-#include <iostream>
-#include <queue>
-#include <algorithm>
+#include <bits/stdc++.h>
+
+#define endl '\n'
 
 using namespace std;
 
 int main(void){
-    int t, k, n, cont;
-    long long int soma = 0;
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 
-    queue<int> fila;
-
+    int t, n, k;
     cin >> t;
-    for(int i = 0; i < t; i++){
+    while(t--){
         cin >> k >> n;
-        if(n < k){
-            cout << n - 1 << endl;
+        vector<long long> fibo;
+        for(int i = 0; i < k; i++)
+            fibo.push_back(i);
+
+        if(k > n){
+            cout << fibo[n - 1] << endl;
         }else{
-            for(int i = 0; i < k; i++){
-                fila.push(i);
+            long long soma = 0;
+            long long tmp = n - k;
+            while(tmp--){
+                soma = accumulate(fibo.end() - k, fibo.end(), 0LL);
+                fibo.push_back(soma % 1000007);
             }
-
-            soma = ( fila.back() * k )/2;
-            fila.push(soma % 1000007);
-
-            cont = n - k;
-
-            fila.pop();
-            for(int i = 0; i < cont - 1; i++){
-                soma = 0;
-                for(int j = 0; j < k; j++){
-                    soma += fila.front();
-                    fila.push(fila.front());
-                    fila.pop();
-                }
-                fila.push(soma % 1000007);
-                fila.pop();
-            }
-    
-            cout << fila.back() % 1000007 << endl;
-
-            while(!fila.empty()) fila.pop();
-            soma = 0;
+            cout << fibo[n - 1] % 1000007 << endl;
         }
     }
     return 0;
