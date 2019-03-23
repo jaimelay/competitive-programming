@@ -3,7 +3,6 @@
 #### Linguagens Utilizadas
 * C++
 * JAVA
-* Python
 #### Assuntos Abordados em Questões de Maratona de Programação
 * Teoria dos Números
 * Combinatória
