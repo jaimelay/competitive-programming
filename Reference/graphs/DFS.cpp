@@ -9,7 +9,7 @@ void DFS(int u){
     vis[u] = true;
     tam++;                  // O que fazer quando entrar no vertice.
     for(auto v : adj[u])
-        if(!vis[u]) DFS(v);
+        if(!vis[v]) DFS(v);
 }
 
 // O vertice u esta conectado com dest?
