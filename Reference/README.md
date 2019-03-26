@@ -3,9 +3,11 @@
 * [Template](https://github.com/jaimelay/competitive-programming/blob/master/Reference/template.cpp)
 ## Ad-Hoc
 ## Estrutura de Dados
-* [Union-Find](https://github.com/jaimelay/competitive-programming/blob/master/Reference/UnionFind.cpp)
+* [Union-Find](https://github.com/jaimelay/competitive-programming/blob/master/Reference/data-structures/UnionFind.cpp)
 ## Geometria
 ## Grafos
+* [DFS - Depth First Search](https://github.com/jaimelay/competitive-programming/blob/master/Reference/graphs/DFS.cpp)
+* [BFS - Breadth First Search](https://github.com/jaimelay/competitive-programming/blob/master/Reference/graphs/BFS.cpp)
 ## Matemática
 ## Programação Dinâmica
 ## String
