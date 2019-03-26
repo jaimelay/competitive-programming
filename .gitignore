@@ -1,4 +1,5 @@
 *.exe
 *.out
 *.txt
+.vscode
 .DS_Store
