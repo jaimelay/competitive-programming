@@ -2,15 +2,13 @@
 
 using namespace std;
 
-int n, cap;
-int w[110], v[110];
+int n, cap, w[110], v[110];
 long long dp[1000001][110];
 
 int main(void){
     freopen("input.txt", "r", stdin);
     cin >> n >> cap;
-    int w[n + 1], v[n + 1];
-    long long dp[cap + 1][n + 1];
+
     w[0] = 0;
     v[0] = 0;
     for(int i = 1; i <= n; i++)
