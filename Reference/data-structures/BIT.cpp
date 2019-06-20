@@ -1,30 +1,37 @@
 // Complexidade:- update -> O(logN)
 //              - query  -> O(logN)
 
-int a[1000], n;
+vector<int> a, n;
 
 struct BIT{
-    vector<int> bit;
-    int n;
+    vector<int> bit, a;
+    long long n;
 
-    BIT(int n){
+    BIT(vector<int> &a, long long n){
         this->n = n;
-        bit.resize(n + 1, 0);
+        this->a = a;
+        bit.assign(n + 1, 0);
+        init();
+    }
+
+    void init(){
         for(int i = 1; i <= n; i++){
             update(i, a[i]);
         }
     }
 
-    void update(int i, int v){
-        for(; i <= n; i += i & -i){
-            bit[i] += v;
+    void update(int i, int val){
+        while(i <= n){
+            bit[i] += val;
+            i += (i & -i);
         }
     }
 
     int query(int i){
         int sum = 0;
-        for(; i > 0; i -= i & -i){
+        while(i > 0){
             sum += bit[i];
+            i -= (i & -i);
         }
         return sum;
     }
@@ -32,6 +39,4 @@ struct BIT{
     int query(int l, int r){
         return query(r) - query(l - 1);
     }
-}
-
-
+};
