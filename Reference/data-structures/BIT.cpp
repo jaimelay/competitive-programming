@@ -15,24 +15,19 @@ struct BIT{
     }
 
     void init(){
-        for(int i = 1; i <= n; i++){
+        for(int i = 1; i <= n; i++)
             update(i, a[i]);
-        }
     }
 
-    void update(int i, int val){
-        while(i <= n){
+    void update(int x, int val){
+        for(int i = x; i <= n; i += i & -i)
             bit[i] += val;
-            i += (i & -i);
-        }
     }
 
-    int query(int i){
+    int query(int x){
         int sum = 0;
-        while(i > 0){
+        for(int i = x; i > 0; i -= i & -i)
             sum += bit[i];
-            i -= (i & -i);
-        }
         return sum;
     }
 
