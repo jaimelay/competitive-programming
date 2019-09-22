@@ -1,5 +1,3 @@
-// Busca por largura - Breadth First Search
-
 vector<int> adj[n];
 int dist[n];
 

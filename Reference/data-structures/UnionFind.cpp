@@ -1,11 +1,3 @@
-//
-// https://www.urionlinejudge.com.br/judge/pt/problems/view/1527
-//
-
-#include <bits/stdc++.h>
-
-using namespace std;
-
 int pai[1000001], n;
 
 void init(){

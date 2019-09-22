@@ -1,0 +1,88 @@
+\documentclass[oneside]{book}
+\usepackage[T1]{fontenc}
+\usepackage[brazil,english]{babel}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tocloft}
+\usepackage{pdflscape}
+\usepackage{multicol}
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{black}}
+
+\geometry{
+	a4paper,
+	left=10mm,
+	right=10mm,
+	top=0.5in,
+	bottom=0.5in,
+}
+
+\lstdefinestyle{shared}{
+    belowcaptionskip=1\baselineskip,
+    breaklines=true,
+    xleftmargin=\parindent,
+    showstringspaces=false,
+    basicstyle=\fontsize{5.5}{6}\ttfamily,
+}
+\lstdefinestyle{cpp}{
+	style=shared,
+    language=C++,
+    keywordstyle=\bfseries\color{green!40!black},
+    commentstyle=\itshape\color{red!80!black},
+    identifierstyle=\color{blue},
+    stringstyle=\color{purple!40!black},
+	basicstyle=\footnotesize,% basic font setting
+    tabsize=3, % tab space width
+}
+\lstdefinestyle{java}{
+    style=shared,
+    language=Java,
+    keywordstyle=\bfseries\color{green!40!black},
+    commentstyle=\itshape\color{purple!40!black},
+    identifierstyle=\color{blue},
+    stringstyle=\color{orange},
+}
+\lstdefinestyle{py}{
+    style=shared,
+    language=Python,
+    keywordstyle=\bfseries\color{green!40!black},
+    commentstyle=\itshape\color{purple!40!black},
+    identifierstyle=\color{blue},
+    stringstyle=\color{orange},
+}
+\lstdefinestyle{txt}{
+    style=shared,
+}
+\lstset{escapechar=@}
+
+\begin{document}
+\begin{titlepage}
+	\centering
+
+	\includegraphics[width=0.20\textwidth]{./uerj-logo.png}\vspace{1.3cm}
+	\includegraphics[width=0.20\textwidth]{./icpc-logo.png}\par\vspace{1.3cm}
+	{\scshape\LARGE UERJ - Universidade do Estado do Rio de Janeiro \par}
+	\vspace{1cm}
+	{\scshape\Large Códigos de Maratona de Programação\par}
+	\vspace{1.5cm}
+	{\huge\bfseries UERJ++\par}
+	\vspace{2cm}
+	{\Large\itshape (Jaime Lay, Vinicius Sathler, Paulo Victor)\par}
+	\vfill
+	coach\par
+	Paulo Eustáquio
+
+	\vfill
+
+% Bottom of the page
+	{\large \today\par}
+\end{titlepage}
+\tableofcontents
+
+\input contents.tex
+
+\end{document}

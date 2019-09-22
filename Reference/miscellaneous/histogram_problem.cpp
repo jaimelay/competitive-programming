@@ -1,3 +1,5 @@
+// Função que retorna a maior área retangular de um histograma.
+
 long long getMaxArea(vector<long long> &hist, long long n){
     stack<long long> s;
 
