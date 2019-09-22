@@ -10,7 +10,7 @@ void DFS(int v){
 }
 
 // Cobertura Minima
-// 0 = Não visitado, 1 = Visitado, 2 = Vertice da cobertura
+// 0 = Nao visitado, 1 = Visitado, 2 = Vertice da cobertura
 void DFS(int v){
     vis[v] = 1;
     for(auto u : g[v]){
@@ -29,3 +29,5 @@ bool isConnect(int u, int dest){
         if(connect(v, dest)) return true;
     return false;
 }
+
+

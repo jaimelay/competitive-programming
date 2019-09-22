@@ -1,4 +1,5 @@
-// Retorna um vector Z, onde cada Z[i] mostra a maior substring começando do i que também é prefixo da string.
+// Retorna um vector Z, onde cada Z[i] mostra a maior substring comecando do i que tambem eh prefixo da string.
+
 vector<int> z_function(string s) {
     int n = (int) s.length();
     vector<int> z(n);
