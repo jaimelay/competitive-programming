@@ -3,10 +3,6 @@
 # Subsections within a section should follow the format:
 #   [filename within code directory][tab character \t][subsection title]
 
-[C++ Tricks e Template]
-template.cpp	Template
-tricks.cpp	Tricks
-
 [Data Structures]
 data-structures/BIT.cpp	Binary Indexed Tree
 data-structures/BIT-2D.cpp	Binary Indexed Tree 2D

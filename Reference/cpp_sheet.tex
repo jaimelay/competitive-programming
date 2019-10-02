@@ -1,0 +1,357 @@
+\chapter{C++ e Biblioteca STD}
+
+\begin{multicols}{2}
+
+\section{Compilador GNU}
+
+Alguns comandos do compilador do GNU traduz para algumas instruções em Assembly (muito rápido). \\
+
+\textbf{\_\_builtin\_ffs(int)}	//Retorna 1 + posição do bit 1 menos significativo. Retorna zero para 0.\\
+\textbf{\_\_builtin\_clz(int)}	//Retorna o número de zeros na frente do bit 1 mais significativo. Não definido para zero.\\
+\textbf{\_\_builtin\_ctz(int)}	//Retorna o número de zeros atrás do bit 1 menos significativo. Não definido para zero.\\
+\textbf{\_\_builtin\_popcount(int)}	//Soma dos bits.\\
+\textbf{\_\_builtin\_parity(int)}	//Soma dos bits módulo 2.\\
+
+\textbf{\_\_builtin\_ffsll(long long)}	//Retorna 1 + posição do bit 1 menos significativo. Retorna zero para 0.\\
+\textbf{\_\_builtin\_clzll(long long)}	//Retorna o número de zeros na frente do bit 1 mais significativo. Não definido para zero.\\
+\textbf{\_\_builtin\_ctzll(long long)}	//Retorna o número de zeros atrás do bit 1 menos significativo. Não definido para zero.\\
+\textbf{\_\_builtin\_popcountll(long long)}	//Soma dos bits.\\
+\textbf{\_\_builtin\_parityll(long long)}	//Soma dos bits módulo 2.\\
+
+\section{I/O rápido}
+
+Para acelear $cin/cout$: \textbf{ios\_base::sync\_with\_stdio(0)}
+
+$gets$ é mais rápido que $scanf$, que é mais rápido que $cin$. JAMAIS usar $gets$ fora de programação competitiva. $gets$ não lê '$\backslash n$', mas para quando o encontra. $puts$ é mais rápido que $printf$, que é mais rápido que $cout$. $puts$ coloca o '$\backslash n$' ao final.
+
+Para preprocessar todo o input rápido:
+
+\begin{lstlisting}
+#define MAXI 100000009
+char input[MAXI];
+void readInput() {
+	input[fread(input, 1, sizeof(input)-4, stdin)] = 0;
+}
+\end{lstlisting}
+
+Para ler inteiros rápido (não serve para programas que acabam em EOF):
+
+\begin{lstlisting}
+int readInt() {
+	bool minus = false;
+	int ans = 0;
+	char c;
+	while (c = getchar()) {
+		if (c == '-') break;
+		if (c >= '0' && c <= '9') break;
+	}
+	if (c == '-') minus = true;
+	else ans = c-'0';
+	while (c = getchar()) {
+		if (c < '0' || c > '9') break;
+		ans = ans*10 + (c - '0');
+	}
+	return minus ? -ans : ans;
+}
+\end{lstlisting}
+
+\newpage
+
+\section{Verificar overflow}
+
+\begin{lstlisting}
+if (b > 0 && a > INFLL-b) //a+b vai dar overflow
+if (b < 0 && a < -INFLL-b) //a+b vai dar underflow
+if (b < 0 && a > INFLL+b) //a-b vai dar overflow
+if (b > 0 && a < -INFLL+b) //a-b vai dar underflow
+if (b > INFLL/a) //a*b vai dar overflow
+if (b < -INFLL/a) //a*b vai dar underflow
+\end{lstlisting}
+
+\section{C++11}
+
+\textbf{auto a = b} //a é o tipo de b.\\
+\textbf{auto a = b()} //a é o tipo de retorno de b.\\
+\textbf{for(T a : b)} //itera sobre todos os elementos de uma coleção iterável b.\\
+\textbf{for(T \& a : b)} //itera sobre todas as referências de uma coleção iterável b.\\
+\textbf{lambda functions: [] (params) -> type \{body\}} retorna o ponteiro para uma função \textbf{type name(params) \{body\} }
+
+\section{Complex}
+
+Exemplo: \textbf{\#include <complex>}, \textbf{complex<double> point};
+
+Funções: \textbf{real}, \textbf{imag}, \textbf{abs}, \textbf{arg}, \textbf{norm}, \textbf{conj}, \textbf{polar}
+
+\section{Pair}
+
+\textbf{\#include <utility>} \\
+\textbf{pair<tipo1, tipo2> P;} 
+
+tipo1 first, tipo2 second
+
+\section{List}
+
+\textbf{list<Elem> c} //Cria uma lista vazia.\\
+\textbf{list<Elem> c1(c2)} //Cria uma cópia de uma outra lista do mesmo tipo (todos os elementos são copiados).\\
+\textbf{list<Elem> c(n)} //Cria uma lista com $n$ elementos definidos pelo construtor default.\\
+\textbf{list<Elem> c(n,elem)} //Cria uma lista inicializada com $n$ cópias do elemento $elem$.\\
+\textbf{list<Elem> c(beg,end)} //Cria uma lista com os elementos no intervalo $[beg, end)$.\\
+\textbf{c.\~list<Elem>()} //Destrói todos os elementos e libera a memória.\\
+
+Membros de list:\\
+\textbf{begin}, \textbf{end}, \textbf{rbegin}, \textbf{rend}, \textbf{size}, \textbf{empty}, \textbf{clear}, \textbf{swap}.\\
+\textbf{front} //Retorna o primeiro elemento.\\
+\textbf{back} //Retorna o último elemento.\\
+\textbf{push\_back} //Coloca uma cópia de $elem$ no final da lista.\\
+\textbf{pop\_back} //Remove o último elemento e não retorna ele.\\
+\textbf{push\_front} //Insere uma cópia de $elem$ no começo da lista.\\
+\textbf{pop\_front}	//Remove o primeiro elemento da lista e não retorna ele.\\
+\textbf{swap} //Troca duas list's em $O(1)$.\\
+\textbf{erase (it)}//Remove o elemento na posição apontada pelo iterador $it$ e retorna a posição do próximo elemento.\\
+\textbf{erase (beg,end)}//Remove todos os elementos no range $[beg,end)$ e retorna a posição do próximo elemento;\\
+\textbf{insert (it, pos)}//Insere o elemento $pos$ na posição anterior à apontada pelo iterador $it$.
+
+\section{Vector}
+
+\textbf{\#include <vector>}\\
+\textbf{vector<tipo> V;}\\
+
+Membros de vector:\\
+\textbf{begin}, \textbf{end}, \textbf{rbegin}, \textbf{rend}, \textbf{size}, \textbf{empty}, \textbf{clear}, \textbf{swap}.\\
+\textbf{reserve} //Seta a capacidade mínima do vetor.\\
+\textbf{front} //Retorna a referência para o primeiro elemento.\\
+\textbf{back} //Retorna a referência para o último elemento.\\
+\textbf{erase} //Remove um elemento do vetor.\\
+\textbf{pop\_back} //Remove o último elemento do vetor.\\
+\textbf{push\_back} //Adiciona um elemento no final do vetor.\\
+\textbf{swap} //Troca dois vector's em $O(1)$.
+
+\section{Deque}
+
+\textbf{\#include <queue>}\\
+\textbf{deque<tipo> Q;}\\
+\textbf{Q[50]} //Acesso randômico.\\
+
+Membros de deque:\\
+\textbf{begin}, \textbf{end}, \textbf{rbegin}, \textbf{rend}, \textbf{size}, \textbf{empty}, \textbf{clear}, \textbf{swap}.\\
+\textbf{front}	//Retorna uma referência para o primeiro elemento.\\
+\textbf{back}	//retorna uma referência para o último elemento.\\
+\textbf{erase}	//Remove um elemento do deque.\\
+\textbf{pop\_back}	//Remove o último elemento do deque.\\
+\textbf{pop\_front}	//Remove o primeiro elemento do deque.\\
+\textbf{push\_back}	//Insere um elemento no final do deque.\\
+\textbf{push\_front}//Insere um elemento no começo do deque.\\
+
+\section{Queue}
+
+\textbf{\#include <queue>}\\
+\textbf{queue<tipo> Q;}\\
+
+Membros de queue:\\
+\textbf{back} //Retorna uma referência ao último elemento da fila.\\
+\textbf{empty} //Retorna se a fila está vazia ou não.\\
+\textbf{front} //Retorna uma referência ao primeiro elemento da fila.\\
+\textbf{pop} //Retorna o primeiro elemento da fila.\\
+\textbf{push} //Insere um elemento no final da fila.\\
+\textbf{size} //Retorna o número de elementos da fila.
+
+\section{Stack}
+
+\textbf{\#include <stack>}\\
+\textbf{stack<tipo> P;}\\
+
+Membros de stack:\\
+\textbf{empty} //Retorna se pilha está vazia ou não.\\
+\textbf{pop} //Remove o elemento no topo da pilha.\\
+\textbf{push} //Insere um elemento na pilha.\\
+\textbf{size} //retorna o tamanho da pilha.\\
+\textbf{top} //Retorna uma referência para o elemento no topo da pilha.
+
+\section{Map}
+
+\textbf{\#include <map>}\\
+\textbf{\#include <string>}\\
+\textbf{map<string, int> si;}\\
+
+Membros de map:\\
+\textbf{begin}, \textbf{end}, \textbf{rbegin}, \textbf{rend}, \textbf{size}, \textbf{empty}, \textbf{clear}, \textbf{swap}, \textbf{count}.\\
+\textbf{erase} //Remove um elemento do mapa.\\
+\textbf{find} //retorna um iterador para um elemento do mapa que tenha a chave.\\
+\textbf{lower\_bound} //Retorna um iterador para o primeiro elemento maior que a chave ou igual à chave.\\
+\textbf{upper\_bound} //Retorna um iterador para o primeiro elemento maior que a chave.\\
+
+Map é um set de pair, ao iterar pelos elementos de map, $i->first$ é a chave e $i->second$ é o valor.
+
+Map com comparador personalizado: Utilizar \textbf{struct} com \textbf{bool operator<( tipoStruct s ) const {}}. Cuidado pra diferenciar os elementos!
+
+\section{Set}
+
+\textbf{\#include <set>}\\
+\textbf{set<tipo> S;}\\
+
+Membros de set:\\
+\textbf{begin}, \textbf{end}, \textbf{rbegin}, \textbf{rend}, \textbf{size}, \textbf{empty}, \textbf{clear}, \textbf{swap}.\\
+\textbf{erase} //Remove um elemento do set.\\
+\textbf{find} //Retorna um iterador para um elemento do set.\\
+\textbf{insert} //Insere um elemento no set.\\
+\textbf{lower\_bound} //Retorna um iterador para o primeiro elemento maior que um valor ou igual a um valor.\\
+\textbf{upper\_bound} //Retorna um iterador para o primeiro elemento maior que um valor.\\
+
+Criando set com comparador personalizado: Utilizar \textbf{struct cmp} com \textbf{bool operator()(tipo, tipo) const {}} e declarar \textbf{set<tipo, vector<tipo>, cmp()> S}. Cuidado pra diferenciar os elementos!
+
+\section{Ordered set}
+
+\begin{lstlisting}
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+
+typedef tree<int,null_type,less<int>,rb_tree_tag,
+tree_order_statistics_node_update> ordered_set;
+\end{lstlisting}
+
+Membros de ordered\_set:\\
+\textbf{find\_by\_order(p)}	//Retorna um ponteiro para o p-ésimo elemento do set. Se p é maior que o tamanho de n, retorna o fim do set.\\
+\textbf{order\_by\_key(v)}	//Retorna quantos elementos são menores que v.\\
+
+Mesmo set com operações de find\_by\_order e order\_by\_key.
+
+\section{Unordered set e map}
+
+Igual a set e map, porém usa Hash Table (é mais rápido). Precisa de C++11.\\
+\textbf{unordered\_set<tipo> S;}\\
+\textbf{unordered\_map<chave, valor> S;}\\
+
+\section{Priority Queue}
+
+\textbf{\#include <queue>}\\
+\textbf{priority\_queue<tipo> pq}\\
+
+Membros: \textbf{empty}, \textbf{size}, \textbf{top}, \textbf{push}, \textbf{pop}.
+
+Utilizar \textbf{struct cmp} com \textbf{bool operator ()(tipo, tipo)} e declarar \textbf{priority\_queue<tipo, vector<tipo>, cmp()> pq}\\.
+
+Maior vem antes!
+
+\section{Bitset}
+
+\textbf{\#include <bitset>}\\
+\textbf{bitset<MAXN> bs}\\
+
+Membros: \textbf{empty}, \textbf{size}, \textbf{count}, \textbf{to\_string}, \textbf{to\_ulong}, \textbf{to\_ullong}.\\
+\textbf{set} //Seta todos os elementos para 1.\\
+\textbf{reset} //Seta todos os elementos para 0.\\
+\textbf{flip(n)} //Alterna o bit n.\\
+\textbf{flip} //Alterna todos os bits.\\
+\textbf{operador >>} //Shift left.\\
+\textbf{operador <<} //Shift right.\\
+\textbf{operador \&} //And bit a bit.\\
+\textbf{operador |} //Or bit a bit.\\
+\textbf{operador \^} //Xor bit a bit.\\
+\textbf{operador \~} //Not bit a bit.\\
+\textbf{operador ==} //Totalmente igual.\\
+\textbf{operador !=} //Ao menos um bit é diferente.
+
+\section{String}
+
+\textbf{\#include <string>}\\
+\textbf{string a = "hello";}\\
+
+Membros: \textbf{begin}, \textbf{end}, \textbf{rbegin}, \textbf{rend}, \textbf{size}, \textbf{clear}, \textbf{empty}
+\textbf{operator +} //Concatena string.\\
+\textbf{operator += ou append(str)} //Concatena string.\\
+\textbf{push\_back(c)} //Concatena caractere.\\
+\textbf{push\_back(c)} //Remove último caractere (C++11).\\
+\textbf{insert(pos, str) ou insert(it, str)} //Concatena caractere.\\
+\textbf{assign(str) ou assign(n, c)} //Atribui string.\\
+\textbf{erase(pos, len)} //Deleta trecho da string.\\
+\textbf{replace(pos, len, str)} //Substitui trecho da string.\\
+\textbf{swap(str)} //Troca conteúdos em $O(1)$.\\
+\textbf{find(str, pos)} //Retorna índice da próxima aparição de str em $O(n)$. Retorna string::npos se não achar.\\
+\textbf{substr(pos, len)} //Retorna substring.\\
+
+\section{Algorithm e numeric}
+
+\textbf{\#include <algorithm>} ou \textbf{\#include <numeric>}\\
+beg e end podem ser ponteiros para arrays do tipo \textbf{T} ou iteradores de uma coleção de container tipo \textbf{T}. Quando falarmos em comparador, falamos de funções \textbf{bool comp(T a, T b)}, que simulam ``menor que''. Quando falarmos em evaluadores, falamos em funções \textbf{bool eval(T a)}. Quando falarmos em somadores, falamos em funções \textbf{T add(T a, T b)}. Todos os ponteiros de funções usados abaixo podem ser codados com lambda functions em C++11.\\
+
+\section{Algorithm: Não modificadores}
+\textbf{any\_of(beg, end, eval)} //Retorna se todos os elementos em [beg,end) são evaluados como true pelo evaluador eval.\\
+\textbf{all\_of(beg, end, eval)} //Retorna se algum elemento em [beg,end) é evaluado como true pelo evaluador eval.\\
+\textbf{none\_of(beg, end, eval)} //Retorna se nenhum elemento em [beg,end) é evaluado como true pelo evaluador eval.\\
+\textbf{for\_each(beg, end, proc)} //Executa a função \textbf{void proc(T a)} para cada elemento em [beg, end).\\
+\textbf{count(beg, end, c)} //Conta quantos elementos em [beg, end) são iguais a c.\\
+\textbf{count\_if(beg, end, eval)} //Conta quantos elementos em [beg, end) são evaluados como true pelo evaluador eval.
+
+\section{Algorithm: Modificadores}
+\textbf{fill(beg, end, c)} //Atribui c a todos os elementos em [beg, end).\\
+\textbf{generate(beg, end, acum)} //Atribui a cada posição em [beg,end) o valor retornado por \textbf{T acum()} na ordem (usar variáveis globais ou estáticas para valores distintos).\\
+\textbf{remove(beg, end, c)} //Remove todos os elementos em [beg, end) que são iguais a c, retorna o ponteiro para o novo fim de intervalo ou o novo iterador end.\\
+\textbf{remove\_if(beg, end, eval)} //Remove todos os elementos em [beg, end) que forem evaluados como true pelo evaluador eval, retorna o ponteiro para o novo fim de intervalo ou novo iterador end.\\
+\textbf{replace(beg, end, c, d)} //Substitui por d todos os elementos em [beg, end) que são iguais a c.\\
+\textbf{replace\_if(beg, end, eval, c)} //Substitui por d todos os elementos em [beg, end) que forem evaluados como true pelo evaluador eval.\\
+\textbf{swap(a, b)} //Troca o conteúdo de a e b. Para a maior parte das coleções do C++, é $O(1)$.\\
+\textbf{reverse(beg, end)} //Inverte a ordem em [beg, end).\\
+\textbf{rotate(beg, beg+i, end)} //Rotaciona [beg, end) de forma que o i-ésimo elemento fique em primeiro.\\
+\textbf{random\_shuffle(beg, end)} //Aplica permutação aleatória em [beg, end).\\
+\textbf{unique(beg, end)} //Remove todas as duplicatas de elementos consecutivos iguais em [beg, end), retorna o ponteiro para o novo fim de intervalo o novo iterador end.
+
+\section{Algorithm: Partições}
+\textbf{partition(beg, end, eval)} //Reordena [beg,end) de forma a que todos os elementos que sejam evaluados como true pelo evaluador eval venham antes dos que sejam evaluados como false. Ordem de cada parte é indefinida.\\
+\textbf{stable\_partition(beg, end, eval)} //Mesmo que acima, mas a ordem de cada partição é preservada.
+
+\section{Algorithm: Ordenação}
+\textbf{is\_sorted(beg, end)} ou \textbf{is\_sorted(beg, end, comp)} (C++11) //Verifica se [beg, end) está ordenado de acordo com o operador < ou de acordo com o comparador comp.\\
+\textbf{sort(beg, end)} ou \textbf{sort(beg, end, comp)} //Ordena [beg, end) de acordo com o operador < ou de acordo com o comparador comp.\\
+\textbf{stable\_sort(beg, end)} ou \textbf{stable\_sort(beg, end, comp)} //Ordena [beg, end) de acordo com o operador < ou de acordo com o comparador comp. Mantém a ordem de elementos iguais.\\
+\textbf{nth\_element(beg, beg+n, beg)} ou \textbf{nth\_element(beg, beg+n, beg, comp)} //Realiza a partição de [beg, end) de forma a que o n-ésimo fique no lugar, os menores fiquem antes e os maiores, depois. $Expected \; O(n)$. Usa o operador < ou o comparador comp.
+
+\section{Algorithm: Busca binária}
+\textbf{lower\_bound(beg, end, c)} ou \textbf{lower\_bound(beg, end, c, comp)} //Retorna o ponteiro ou iterador ao primeiro elemento maior que ou igual a c na array ordenada [beg, end) de acordo com o operador < ou de acordo com o comparador comp.\\
+\textbf{upper\_bound(beg, end, c)} ou \textbf{upper\_bound(beg, end, c, comp)} //Retorna o ponteiro ou iterador ao primeiro elemento maior que c na array ordenada [beg, end) de acordo com o operador < ou de acordo com o comparador comp.\\
+\textbf{binary\_search(beg, end, c)} ou \textbf{binary\_search(beg, end, c, comp)} //Retorna se o elemento c na array ordenada [beg, end) de acordo com o operador < ou de acordo com a função \textbf{bool comp(T a, T b)}, que simula ``menor que''.
+
+\section{Algorithm: Heap}
+\textbf{make\_heap(beg, end)} ou \textbf{make\_heap(beg, end, comp)} //Transforma [beg,end) em uma heap de máximo de acordo com o operador < ou de acordo com o comparador \textbf{comp}.\\
+\textbf{push\_heap(beg, end, c)} ou \textbf{push\_heap(beg, end, c, comp)} //Adiciona à heap de máximo [beg,end) o elemento c.\\
+\textbf{pop\_heap(beg, end)} ou \textbf{pop\_heap(beg, end, comp)} //Remove da heap de máximo [beg,end) o maior elemento. Joga ele para o final.\\
+\textbf{sort\_heap(beg, end)} ou \textbf{sort\_heap(beg, end, comp)} //Ordena a heap de máximo [beg,end) de forma crescente.
+
+\section{Algorithm: Máximo e mínimo}
+\textbf{max(a,b)} //Retorna o maior valor de a e b.\\
+\textbf{min(a,b)} //Retorna o menor valor de a e b.\\
+\textbf{max\_element(beg, end)} ou \textbf{max\_element(beg, end, comp)} //Retorna o elemento máximo em [beg, end) pelo operador < ou pela comparador comp.\\
+\textbf{min\_element(beg, end)} ou \textbf{min\_element(beg, end, comp)} //Retorna o elemento mínimo em [beg, end) pelo operador < ou pela comparador comp..
+
+\section{Algorithm: Permutações}
+Use \textbf{sort} para obter a permutação inicial!\\
+\textbf{next\_permutation(beg, end)} ou \textbf{next\_permutation (beg, end, comp)} //Reordena [beg, end) para a próxima permutação segundo a ordenação lexicográfica segundo o operador < ou segundo o comparador comp. $O(n)$. Retorna se existe próxima permutação ou não (bool).\\
+\textbf{prev\_permutation(beg, end)} ou \textbf{prev\_permutation (beg, end, comp)} //Reordena [beg, end) para a permutação anterior segundo a ordenação lexicográfica segundo o operador < ou segundo o comparador comp. $O(n)$. Retorna se existe permutação anterior ou não (bool).
+
+\section{Numeric: Acumuladores}
+\textbf{accumulate(beg, end, st)} ou \textbf{accumulate(beg, end, st, add)} //Soma todos os elementos em [beg, end) a partir de um valor inicial st usando o operador + ou o somador add.\\
+\textbf{partial\_sum(beg, end)} ou \textbf{partial\_sum(beg, end, add)} //Transforma [beg, end) em sua array de somas parciais usando o operador + ou o somador add.
+\textbf{partial\_sum(beg, end, st)} ou \textbf{partial\_sum(beg, end, st, add)} //Coloca na array iniciando em st a array de somas parciais de [beg, end) usando o operador + ou o somador add.
+
+\section{Functional}
+
+\textbf{\#include <functional>}\\
+Algumas funções binárias úteis, especialmente para as funções acima. Quando falamos em agregar, falamos em funções binárias to tipo \textbf{T add(T a, T b)}. Quando falamos em comparadores, falamos em funções binárias do tipo \textbf{bool comp(T a, T b)}. Quando falamos em transformações, falamos em funções unárias do tipo \textbf{T t(T a)}.\\
+\textbf{plus<T>()} //Agregador pelo + do tipo T.\\
+\textbf{minus<T>()} //Agregador pelo - do tipo T.\\
+\textbf{multiplies<T>()} //Agregador operador * do tipo T.\\
+\textbf{divides<T>()} //Agregador pelo / do tipo T.\\
+\textbf{modulus<T>()} //Agregador pelo \% do tipo T.\\
+\textbf{negate<T>()} //Transformador pelo - do tipo T.\\
+\textbf{equal\_to<T>()} //Comparador pelo == do tipo T.\\
+\textbf{not\_equal\_to<T>()} //Comparador pelo != do tipo T.\\
+\textbf{greater<T>()} //Comparador pelo > do tipo T.\\
+\textbf{less<T>()} //Comparador pelo < do tipo T.\\
+\textbf{greater\_equal<T>()} //Comparador pelo >= do tipo T.\\
+\textbf{less\_equal<T>()} //Comparador pelo <= do tipo T.\\
+\textbf{logical\_and<T>()} //Comparador pelo \&\& do tipo T.\\
+\textbf{logical\_or<T>()} //Comparador pelo || do tipo T.\\
+\textbf{bind1st(f, k)} //Transforma a função binária em unária fixando o primeiro argumento a k.\\
+\textbf{bind2nd(f, k)} //Transforma a função binária em unária fixando o segundo argumento a k.\\
+
+\end{multicols}
