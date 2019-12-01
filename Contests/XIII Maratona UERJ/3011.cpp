@@ -92,18 +92,15 @@ void gen(){
 }
 
 int main(void){
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
     init();
     gen();
 
     int n, d;
 
-    cin >> n;
+    scanf("%d", &n);
     while(n--){
-        cin >> d;
-        cout << mp[d] << " = " << d << '\n';
+        scanf("%d", &d);
+        printf("%s = %d\n", mp[d].c_str(), d);
     }
     return 0;
 }
