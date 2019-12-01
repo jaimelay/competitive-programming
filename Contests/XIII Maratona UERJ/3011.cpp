@@ -5,10 +5,10 @@ using namespace std;
 vector<char> eq;
 map<int, string> mp;
 
-void init () {
+void init(){
     int aux = '1';
     for(int i = 0; i < 17; i++) {
-        if(i & 1) {
+        if(i & 1){
             eq.push_back('*');
         } else {
             eq.push_back(aux);
@@ -103,7 +103,7 @@ int main(void){
     cin >> n;
     while(n--){
         cin >> d;
-        cout << mp[d] << " = " << d << endl;
+        cout << mp[d] << " = " << d << '\n';
     }
     return 0;
 }
