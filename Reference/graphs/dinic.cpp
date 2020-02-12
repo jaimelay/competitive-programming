@@ -14,7 +14,7 @@ int dist[MAXN], ptr[MAXN], ans[MAXN], src, sink;
 
 void add_edge(int from, int to, int cap, int id) {
     Edge a = { to, 0, cap, (int)g[to].size(), id };
-    Edge b = { from, 0, cap, (int)g[from].size(), -id };
+    Edge b = { from, 0, 0, (int)g[from].size(), -id };
     g[from].push_back(a);
     g[to].push_back(b);
 }
