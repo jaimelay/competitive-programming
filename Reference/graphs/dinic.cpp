@@ -1,5 +1,5 @@
 #define MAXN 10100
-#define INF 2000000000
+#define INF 0x3f3f3f3f
 
 struct Edge {
     int to;
@@ -7,16 +7,19 @@ struct Edge {
     int cap;
     int rev;
     int id;
+
+    Edge () {}
+
+    Edge (int to, int flow, int cap, int rev, int id) :
+        to(to), flow(flow), cap(cap), rev(rev), id(id) {}
 };
 
 vector<Edge> g[MAXN];
 int dist[MAXN], ptr[MAXN], ans[MAXN], src, sink;
 
 void add_edge(int from, int to, int cap, int id) {
-    Edge a = { to, 0, cap, (int)g[to].size(), id };
-    Edge b = { from, 0, 0, (int)g[from].size(), id };
-    g[from].push_back(a);
-    g[to].push_back(b);
+    g[from].push_back(Edge(to, 0, cap, g[to].size(), id));
+    g[to].push_back(Edge(from, 0, 0, g[from].size() - 1, -id));
 }
 
 bool dinic_bfs() {

@@ -3,7 +3,7 @@
 const int INF = 0x3f3f3f3f;
 
 int dist[MAXN];
-vector<pair<int, int>> G[MAXN];
+vector<pair<int, int>> g[MAXN];
 
 int dijkstra(int src, int dest){
     for(int i = 1; i <= n; i++) dist[i] = INF;
@@ -13,16 +13,18 @@ int dijkstra(int src, int dest){
     pq.push({ 0, src });
 
     while(!pq.empty()){
-        int v = pq.top().second;
+        int u = pq.top().second;
         int d = pq.top().first;
         pq.pop();
-        if(d > dist[v]) continue;
-        for(auto edge : G[v]){
-            int u = edge.first;
-            int w = edge.second;
-            if(dist[u] > dist[v] + w){
-                dist[u] = dist[v] + w;
-                pq.push({ dist[u], u });
+
+        if(d > dist[u]) continue;
+
+        for(auto e : g[u]){
+            int v = e.first;
+            int w = e.second;
+            if(dist[v] > dist[u] + w){
+                dist[v] = dist[u] + w;
+                pq.push({ dist[v], v });
             }
         }
     }
