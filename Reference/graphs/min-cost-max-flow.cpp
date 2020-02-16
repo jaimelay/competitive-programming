@@ -96,27 +96,27 @@ bool mcmf_dijkstra_dense(int s, int t) {
 
     vector<bool> vis(n, false);
 
-    d[s] = 0;
+    dist[s] = 0;
     for (int i = 0; i < n; i++) {
-        int v = -1;
+        int u = -1;
         for (int j = 0; j < n; j++) {
-            if (!vis[j] && (v == -1 || dist[j] < dist[v]))
-                v = j;
+            if (!vis[j] && (u == -1 || dist[j] < dist[u]))
+                u = j;
         }
 
-        if (dist[v] == INF) break;
+        if (dist[u] == INF) break;
 
-        vis[v] = true;
-        for (int i = 0; i < g[u].size(); i++) {
-            Edge e = g[u][i];
+        vis[u] = true;
+        for (int j = 0; j < g[u].size(); j++) {
+            Edge e = g[u][j];
             int v = e.to;
 
             if (e.cap - e.flow <= 0) continue;
 
             long long w = e.cost + phi[u] - phi[v];
-            if (dist[v] > d + w) {
-                dist[v] = d + w;
-                parent[v] = { u, i };
+            if (dist[v] > dist[u] + w) {
+                dist[v] = dist[u] + w;
+                parent[v] = { u, j };
             }
         }
     }
@@ -127,7 +127,7 @@ bool mcmf_dijkstra_dense(int s, int t) {
         }
     }
 
-    return parent[t] >= 0;
+    return parent[t].first >= 0;
 }
 
 pair<long long, long long> mcmf(int s, int t) {
