@@ -11,7 +11,7 @@ void dijkstra_sparse(int s){
 
     dist[s] = 0;
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>> > pq;
-    pq.push({ 0, src });
+    pq.push({ 0, s });
 
     while(!pq.empty()){
         int u = pq.top().second;
