@@ -1,39 +1,81 @@
-const int MAXN = 112345;
+// build: O(n), update: O(log(n)), query: O(log(n))
+struct SegmentTree {
+    struct Node {
+        int val;
+    };
 
-int st[4*MAXN], a[MAXN];
+    int size;
+    vector<Node> nodes;
 
-void build(int node, int left, int right){
-    if(left == right){
-        st[node] = a[left];
-    }else{
-        int mid = (left + right)/2;
-        build(2*node, left, mid);
-        build(2*node + 1, mid + 1, right);
-        st[node] = st[2*node] + st[2*node + 1]; // RMQ -> min/max; RSQ -> +
+    Node NEUTRAL_ELEMENT = { INF };
+
+    Node merge(Node a, Node b) {
+        return { min(a.val, b.val) };
     }
-}
 
-void update(int node, int left, int right, int idx, int val){
-    if(left == right){
-        a[idx] = st[node] = val; // update: =, increment: +=
-    }else{
-        int mid = (left + right)/2;
-
-        if(idx <= mid) update(2*node, left, mid, idx, val);
-        else update(2*node + 1, mid + 1, right, idx, val);
-
-        st[node] = st[2*node] + st[2*node + 1];
+    Node single(int v) {
+        return { v };
     }
-}
 
-int query(int node, int left, int right, int a, int b){
-    if(b < left || a > right) return 0; // RMQ -> INF, RSQ -> 0
-    if(left >= a && right <= b){
-        return st[node];
-    }else{
-        int mid = (left + right)/2;
-        int e = query(2*node, left, mid, a, b);
-        int d = query(2*node + 1, mid + 1, right, a, b);
-        return e + d; // RMQ -> min/max; RSQ -> +
+    void init(int n) {
+        size = 1;
+        while (size < n) size *= 2;
+        nodes.resize(2 * size);
     }
-}
+
+    void build(vector<int> &v, int ptr, int left, int right) {
+        if (right - left == 1) {
+            if (left < (int) v.size()) {
+                nodes[ptr] = single(v[left]);
+            }
+            return;
+        }
+
+        int mid = (right + left) / 2;
+        build(v, 2 * ptr + 1, left, mid);
+        build(v, 2 * ptr + 2, mid, right);
+        nodes[ptr] = merge(nodes[2 * ptr + 1], nodes[2 * ptr + 2]);
+    }
+
+    void build(vector<int> &v) {
+        build(v, 0, 0, size);
+    }
+
+    void update(int idx, int val, int ptr, int left, int right) {
+        if (right - left == 1) {
+            nodes[ptr] = single(val);
+            return;
+        }
+
+        int mid = (right + left) / 2;
+        if (idx < mid) {
+            update(idx, val, 2 * ptr + 1, left, mid);
+        } else {
+            update(idx, val, 2 * ptr + 2, mid, right);
+        }
+        nodes[ptr] = merge(nodes[2 * ptr + 1], nodes[2 * ptr + 2]);
+    }
+
+    void update(int idx, int val) {
+        update(idx, val, 0, 0, size);
+    }
+
+    Node query(int l, int r, int ptr, int left, int right) {
+        if (left >= r || l >= right) {
+            return NEUTRAL_ELEMENT;
+        }
+
+        if (left >= l && right <= r) {
+            return nodes[ptr];
+        }
+
+        int mid = (right + left) / 2;
+        Node qry1 = query(l, r, 2 * ptr + 1, left, mid);
+        Node qry2 = query(l, r, 2 * ptr + 2, mid, right);
+        return merge(qry1, qry2);
+    }
+
+    Node query(int l, int r) {
+        return query(l, r, 0, 0, size);
+    }
+};
