@@ -12,9 +12,9 @@ long long rho(long long n) {
         x = y = 2;
 
         while (true) {
-            x = addmod(multmod(x, x, n), c, n);
-            y = addmod(multmod(y, y, n), c, n);
-            y = addmod(multmod(y, y, n), c, n);
+            x = addMod(multMod(x, x, n), c, n);
+            y = addMod(multMod(y, y, n), c, n);
+            y = addMod(multMod(y, y, n), c, n);
             d = gcd(abs(x - y), n);
 
             if (d == n) {

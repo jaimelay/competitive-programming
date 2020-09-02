@@ -9,7 +9,7 @@ bool isComposite(long long n, long long a, long long d, int s) {
     }
 
     for (int r = 1; r < s; r++) {
-        x = multmod(x, x, n);
+        x = multMod(x, x, n);
 
         if (x == n - 1) {
             return false;
