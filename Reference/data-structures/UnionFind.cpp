@@ -1,20 +1,29 @@
-int pai[MAXN], qntd[MAXN], n;
+int p[MAXN], sz[MAXN], n;
 
-void init(){
-    for(int i = 1; i <= n; i++) pai[i] = i;
+void preprocess() {
+    for (int i = 1; i <= n; i++) {
+        p[i] = i;
+    }
 }
 
-int find(int v){
-    if(pai[v] == v)
+int findSet(int v) {
+    if (p[v] == v) {
         return v;
-    return pai[v] = find(pai[v]);
+    }
+
+    return p[v] = findSet(p[v]);
 }
 
-void merge(int u, int v){
-    u = find(u);
-    v = find(v);
-    if(u == v) return;
-    if(qntd[u] < qntd[v]) swap(u, v);
-    pai[u] = v;
-    qntd[v] += qntd[u];
+void unionSet(int a, int b){
+    int u = findSet(u);
+    int v = findSet(v);
+
+    if (u != v) {
+        if(sz[u] < sz[v]) {
+            swap(u, v);
+        }
+
+        p[v] = u;
+        sz[u] += sz[v];
+    }
 }
