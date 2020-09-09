@@ -1,13 +1,11 @@
-#define MAXN 100009
-
-const int INF = 0x3f3f3f3f;
-
-int dist[MAXN], parent[MAXN];
-vector<pair<int, int>> g[MAXN];
+int dist[MAXN];
+vector<int> parent[MAXN];
 
 // Complexity: O(m * log(n))
-void dijkstra_sparse(int s){
-    for(int i = 0; i < n; i++) dist[i] = INF;
+void dijkstraSparse(int s){
+    for(int i = 0; i < n; i++) {
+        dist[i] = INF;
+    }
 
     dist[s] = 0;
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>> > pq;
@@ -18,12 +16,14 @@ void dijkstra_sparse(int s){
         int d = pq.top().first;
         pq.pop();
 
-        if(d > dist[u]) continue;
+        if (d > dist[u]) {
+            continue;
+        }
 
-        for(auto e : g[u]){
+        for (auto e : g[u]) {
             int v = e.first;
             int w = e.second;
-            if(dist[v] > dist[u] + w){
+            if (dist[v] > dist[u] + w) {
                 dist[v] = dist[u] + w;
                 pq.push({ dist[v], v });
             }
@@ -32,33 +32,45 @@ void dijkstra_sparse(int s){
 }
 
 // Complexity: O(n^2 + m)
-void dijkstra_dense(int s) {
-    for(int i = 0; i < n; i++) {
+void dijkstraDense(int s) {
+    for(int i = 0; i <= n; i++) {
         dist[i] = INF;
-        parent[i] = -1;
     }
 
+    memset(parent, 0, sizeof(parent));
     vector<bool> vis(n, false);
 
     dist[s] = 0;
+    parent[s] = { -1 };
+
     for (int i = 0; i < n; i++) {
         int u = -1;
         for (int j = 0; j < n; j++) {
-            if (!vis[j] && (u == -1 || dist[j] < dist[u]))
+            if (!vis[j] && (u == -1 || dist[j] < dist[u])) {
                 u = j;
+            }
         }
 
-        if (dist[u] == INF) break;
+        if (dist[u] == INF) {
+            break;
+        }
 
         vis[u] = true;
-        for (auto edge : g[u]) {
-            int v = edge.first;
-            int w = edge.second;
+        
+        for (int v = 0; v < n; v++) {
+            if (g[u][v] == 0) {
+                continue;
+            }
+
+            int w = g[u][v];
 
             if (dist[u] + w < dist[v]) {
                 dist[v] = dist[u] + w;
-                parent[v] = u;
+                parent[v].clear();
+                parent[v].push_back(u);
+            } else if (dist[u] + w == dist[v]) {
+                parent[v].push_back(u);
             }
-        }
+        } 
     }
 }
