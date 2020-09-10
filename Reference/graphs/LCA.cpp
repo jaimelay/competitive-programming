@@ -2,15 +2,30 @@
 
 int LOG_MAX_NODES = 25;
 vector<vector<int>> up;
-vector<int> G[MAXN], depth;
+vector<pair<int, long long>> g[MAXN];
+vector<int> depth;
+vector<long long> dist;
 
-void DFS(int v, int p) {
-    up[v][0] = p;
+void addEdge(int u, int v, int w = 0) {
+    g[u].push_back({ v, w });
+    g[v].push_back({ u, w });
+}
 
-    for (int u : G[v]) {
-        if (u != p) {
-            depth[u] = depth[v] + 1;
-            DFS(u, v);
+void DFS(int u, int p) {
+    up[u][0] = p;
+
+    for (int l = 1; l <= LOG_MAX_NODES; l++) {
+        up[u][l] = up[up[u][l - 1]][l - 1];
+    }
+
+    for (auto edge : g[u]) {
+        int v = edge.first;
+        long long w = edge.second;
+
+        if (v != p) {
+            depth[v] = depth[u] + 1;
+            dist[v] = dist[u] + w;
+            DFS(v, u);
         }
     }
 }
@@ -52,13 +67,10 @@ int liftingUp(int a, int x) {
 }
 
 void preprocess(int root, int n) {
-    depth.resize(n + 10);
-    LOG_MAX_NODES = (int)ceil(log2(n + 1));
-    up.assign(n + 10, vector<int>(LOG_MAX_NODES));
+    depth.resize(n);
+    dist.resize(n);
+    LOG_MAX_NODES = (int)ceil(log2(n));
+    up.assign(n, vector<int>(LOG_MAX_NODES + 1));
+
     DFS(root, root);
-    for (int l = 1; l <= LOG_MAX_NODES; l++) {
-        for (int u = 1; u <= n; u++) {
-            up[u][l] = up[up[u][l - 1]][l - 1];
-        }
-    }
 }
