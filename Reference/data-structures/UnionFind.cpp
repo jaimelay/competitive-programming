@@ -3,6 +3,7 @@ int p[MAXN], sz[MAXN], n;
 void preprocess() {
     for (int i = 1; i <= n; i++) {
         p[i] = i;
+        sz[i] = 0;
     }
 }
 
@@ -15,11 +16,11 @@ int findSet(int v) {
 }
 
 void unionSet(int a, int b){
-    int u = findSet(u);
-    int v = findSet(v);
+    int u = findSet(a);
+    int v = findSet(b);
 
     if (u != v) {
-        if(sz[u] < sz[v]) {
+        if (sz[u] < sz[v]) {
             swap(u, v);
         }
 
