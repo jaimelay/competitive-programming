@@ -135,12 +135,12 @@ bool MCMFDjikstraDense(int s, int t) {
 }
 
 pair<long long, long long> MCMF(int s, int t, int k = INF) {
-    long long min_cost = 0, max_flow = 0, total_cost = 0;
+    long long min_cost = 0, max_flow = 0;
 
     MCMFBellmanFord(s);
 
     while (MCMFDjikstraSparse(s, t)) {
-        long long flow = INF;
+        long long flow = INF, cost = 0; // Flow and Cost on each augmented path found.
 
         for (int u = t; u != s; u = parent[u].first) {
             Edge e = g[parent[u].first][parent[u].second];
@@ -152,7 +152,7 @@ pair<long long, long long> MCMF(int s, int t, int k = INF) {
             e.flow += flow;
             g[e.to][e.rev].flow -= flow;
             min_cost += e.cost * flow;
-            total_cost += e.cost;
+            cost += e.cost;
         }
 
         max_flow += flow;
