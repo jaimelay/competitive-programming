@@ -1,6 +1,3 @@
-#define MAXN 110
-#define INF 0x3f3f3f3f
-
 struct Edge {
     int to;
     int flow;
@@ -16,22 +13,25 @@ struct Edge {
 
 vector<Edge> g[MAXN];
 long long dist[MAXN], phi[MAXN];
-int n, m;
 pair<int, int> parent[MAXN];
+int n, m;
 
 void add_edge(int from, int to, long long cap, long long cost) {
     g[from].push_back(Edge(to, 0, cap, cost, g[to].size()));
     g[to].push_back(Edge(from, 0, 0, -cost, g[from].size() - 1));
 }
 
-void mcmf_bellman_ford(int s) {
+void MCMFBellmanFord(int s) {
     fill(phi, phi + MAXN, INF);
     phi[s] = 0;
 
     for (int i = 0; i < n - 1; i++) {
         for (int u = 0; u < n; u++) {
             for (Edge e : g[u]) {
-                if (!e.cap) continue;
+                if (!e.cap) {
+                    continue;
+                }
+
                 int v = e.to;
                 long long w = e.cost;
                 phi[v] = min(phi[v], phi[u] + w);
@@ -40,16 +40,15 @@ void mcmf_bellman_ford(int s) {
     }
 }
 
-// Complexity: O(m*log(n))
-// FOR SPARSE GRAPHS USE THIS DIJKSTRA
-bool mcmf_dijkstra_sparse(int s, int t) {
+// Complexity: O(m * log(n))
+bool MCMFDjikstraSparse(int s, int t) {
     for (int i = 0; i < MAXN; i++) {
         dist[i] = INF;
         parent[i] = { -1, -1 };
     }
 
     dist[s] = 0;
-    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>> > pq;
+    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
     pq.push({ 0, s });
 
     bool flag = false;
@@ -62,7 +61,7 @@ bool mcmf_dijkstra_sparse(int s, int t) {
 
         if (d != dist[u]) continue;
 
-        for (int i = 0; i < g[u].size(); i++) {
+        for (int i = 0; i < int(g[u].size()); i++) {
             Edge e = g[u][i];
             int v = e.to;
 
@@ -87,8 +86,7 @@ bool mcmf_dijkstra_sparse(int s, int t) {
 }
 
 // Complexity: O(n^2 + m)
-// FOR DENSE GRAPHS USE THIS DIJKSTRA
-bool mcmf_dijkstra_dense(int s, int t) {
+bool MCMFDjikstraDense(int s, int t) {
     for (int i = 0; i < MAXN; i++) {
         dist[i] = INF;
         parent[i] = { -1, -1 };
@@ -100,20 +98,26 @@ bool mcmf_dijkstra_dense(int s, int t) {
     for (int i = 0; i < n; i++) {
         int u = -1;
         for (int j = 0; j < n; j++) {
-            if (!vis[j] && (u == -1 || dist[j] < dist[u]))
+            if (!vis[j] && (u == -1 || dist[j] < dist[u])) {
                 u = j;
+            }
         }
 
-        if (dist[u] == INF) break;
+        if (dist[u] == INF) {
+            break;
+        }
 
         vis[u] = true;
-        for (int j = 0; j < g[u].size(); j++) {
+        for (int j = 0; j < int(g[u].size()); j++) {
             Edge e = g[u][j];
             int v = e.to;
 
-            if (e.cap - e.flow <= 0) continue;
+            if (e.cap - e.flow <= 0) {
+                continue;
+            }
 
             long long w = e.cost + phi[u] - phi[v];
+
             if (dist[v] > dist[u] + w) {
                 dist[v] = dist[u] + w;
                 parent[v] = { u, j };
@@ -130,25 +134,28 @@ bool mcmf_dijkstra_dense(int s, int t) {
     return parent[t].first >= 0;
 }
 
-pair<long long, long long> mcmf(int s, int t) {
-    long long min_cost = 0, max_flow = 0;
-    mcmf_bellman_ford(s);
+pair<long long, long long> MCMF(int s, int t, int k = INF) {
+    long long min_cost = 0, max_flow = 0, total_cost = 0;
 
-    while (mcmf_dijkstra_sparse(s, t)) {
+    MCMFBellmanFord(s);
+
+    while (MCMFDjikstraSparse(s, t)) {
         long long flow = INF;
+
         for (int u = t; u != s; u = parent[u].first) {
             Edge e = g[parent[u].first][parent[u].second];
             flow = min(flow, e.cap - e.flow);
         }
-
-        max_flow += flow;
 
         for (int u = t; u != s; u = parent[u].first) {
             Edge &e = g[parent[u].first][parent[u].second];
             e.flow += flow;
             g[e.to][e.rev].flow -= flow;
             min_cost += e.cost * flow;
+            total_cost += e.cost;
         }
+
+        max_flow += flow;
     }
 
     return { min_cost, max_flow };
