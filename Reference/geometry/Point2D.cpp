@@ -26,7 +26,7 @@ template <class T> struct Point2D {
 	Point2D perp() const { return Point2D(-y, x); } // rotates +90 degrees
 	Point2D normal() const { return perp().unit(); }
 
-	// returns point rotated 'a' radians ccw around the origin
+	// Returns point rotated 'a' radians ccw around the origin
 	Point2D rotate(double a) const {
 		return Point2D(x * cos(a) - y * sin(a), x * sin(a) + y * cos(a));
 	}
@@ -35,6 +35,35 @@ template <class T> struct Point2D {
 	bool onSegment(Point2D s, Point2D e) {
 		return (*this).cross(s, e) == 0 && (s - *this).dot(e - *this) <= 0;
 	}
+
+    // Returns the shortest distance between this point and the line segment from point s to e.
+    double distanceToLineSegment(Point2D &s, Point2D &e) {
+        if (s == e) {
+            return ((*this) - s).dist();
+        }
+
+        auto d = (e - s).dist2(), t = min(d, max(.0,((*this) - s).dot(e - s)));
+        return (((*this) - s) * d - (e - s) * t).dist() / d;
+    }
+
+    // Returns true if p lies within the polygon. 
+    // If strict is true, it returns false for points on the boundary.
+    // The algorithm uses products in intermediate steps so watch out for overflow.
+    bool isInsidePolygon(vector<Point2D> &polygon, bool strict = true) {
+        int cnt = 0, n = int(polygon.size());
+
+        for (int i = 0; i < n; i++) {
+            Point2D q = polygon[(i + 1) % n];
+
+            if (onSegment(polygon[i], q)) {
+                return !strict;
+            }
+            //or: if (distanceToLineSegment(p[i], q) <= EPS) return !strict;
+            cnt ^= (((*this).y < polygon[i].y) - ((*this).y < q.y)) * (*this).cross(polygon[i], q) > 0;
+        }
+
+        return cnt;
+    }
 
 	friend ostream& operator << (ostream& os, Point2D p) {
 		return os << "(" << p.x << "," << p.y << ")"; 
