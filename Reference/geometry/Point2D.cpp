@@ -32,6 +32,7 @@ template <class T> struct Point2D {
 	}
 
 	// Returns true if this point lies on the line segment from point 's' to point'e'
+	// Use (distanceToLineSegment(s, e) <= EPS) instead when using Point2D<double>.
 	bool onSegment(Point2D s, Point2D e) {
 		return (*this).cross(s, e) == 0 && (s - *this).dot(e - *this) <= 0;
 	}
