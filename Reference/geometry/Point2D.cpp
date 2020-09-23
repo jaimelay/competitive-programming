@@ -32,13 +32,13 @@ template <class T> struct Point2D {
 	}
 
 	// Returns true if this point lies on the line segment from point 's' to point'e'
-	// Use (distanceToLineSegment(s, e) <= EPS) instead when using Point2D<double>.
+	// Use (distanceToSegment(s, e) <= EPS) instead when using Point2D<double>.
 	bool onSegment(Point2D s, Point2D e) {
 		return (*this).cross(s, e) == 0 && (s - *this).dot(e - *this) <= 0;
 	}
 
 	// Returns the shortest distance between this point and the line segment from point s to e.
-	double distanceToLineSegment(Point2D &s, Point2D &e) {
+	double distanceToSegment(Point2D &s, Point2D &e) {
 		if (s == e) {
 			return ((*this) - s).dist();
 		}
@@ -59,7 +59,7 @@ template <class T> struct Point2D {
 			if (onSegment(polygon[i], q)) {
 				return !strict;
 			}
-			//or: if (distanceToLineSegment(p[i], q) <= EPS) return !strict;
+			//or: if (distanceToSegment(polygon[i], q) <= EPS) return !strict;
 			cnt ^= (((*this).y < polygon[i].y) - ((*this).y < q.y)) * (*this).cross(polygon[i], q) > 0;
 		}
 
