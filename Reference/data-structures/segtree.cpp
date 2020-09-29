@@ -3,17 +3,19 @@
 struct SegmentTree {
     struct Node {
         long long val;
+
+        Node(long long val) : val(val) {}
     };
 
     int size;
     vector<Node> nodes;
 
     Node merge(Node a, Node b) {
-        return { min(a.val, b.val) };
+        return Node(min(a.val, b.val));
     }
 
     Node single(int v) {
-        return { v };
+        return Node(v);
     }
 
     SegmentTree(int n, vector<int> &v) {

@@ -1,52 +1,91 @@
-#define MAXN 112345
+struct SegmentTreeLazy {
+    struct Node {
+        long long val;
 
-int st[4*MAXN], lazy[4*MAXN], a[MAXN];
+        Node(long long val) : val(val) {}
+    };
 
-void build(int node, int left, int right){
-    if(left == right){
-        st[node] = a[left];
-    }else{
-        int mid = (left + right)/2;
-        build(2*node, left, mid);
-        build(2*node + 1, mid + 1, right);
-        st[node] = st[2*node] + st[2*node + 1]; // RMQ -> min/max; RSQ -> +
+    int size;
+    vector<Node> nodes, lazy;
+
+    SegmentTreeLazy(int n, vector<int> &v) {
+        size = n;
+        nodes.resize(4 * n);
+        lazy.resize(4 * n);
+        build(v, 0, 0, size);
     }
-}
 
-void propagation(int node, int left, int right){
-    if(lazy[node] != -1){
-        st[node] = lazy[node];  // RMQ  -> update: = lazy[node],                        increment: += lazy[node]
-                                // RSQ  -> update: = (right - left + 1) * lazy[node],   increment: += (right - left + 1) * lazy[node]
-        if(left != right)
-            lazy[2*node] = lazy[2*node + 1] = lazy[node]; // update: =, increment: +=
-        lazy[node] = -1;
+    Node merge(Node a, Node b) {
+        return Node(min(a.val, b.val));
     }
-}
 
-void update(int node, int left, int right, int a, int b, int val){
-    propagation(node, left, right);
-
-    if(right < a || left > b) return;
-
-    if(left >= a && right <= b){
-        lazy[node] = val;
-        propagation(node, left, right);
-    }else{
-        int mid = (left + right)/2;
-        update(2*node, left, mid, a, b, val);
-        update(2*node + 1, mid + 1, right, a, b, val);
-        st[node] = st[2*node] + st[2*node + 1]; // RMQ -> min/max; RSQ -> +
+    Node single(long long v) {
+        return Node(v);
     }
-}
 
-int query(int node, int left, int right, int a, int b){
-    propagation(node, left, right);
+    void build(vector<int> &v, int ptr, int left, int right){
+        if (right == left) {
+            nodes[ptr] = single(v[left]);
+        } else {
+            int mid = (right + left) / 2;
 
-    if(right < a || left > b) return 0; // RMQ -> INF, RSQ -> 0
-    if(left >= a && right <= b){
-        return st[node];
-    }else{
-        int mid = (left + right)/2;
-        return query(2*node, left, mid, a, b) + query(2*node + 1, mid + 1, right, a, b); // RMQ -> min/max; RSQ -> +
+            build(v, 2 * ptr + 1, left, mid);
+            build(v, 2 * ptr + 2, mid + 1, right);
+
+            nodes[ptr] = merge(nodes[2 * ptr + 1], nodes[2*ptr + 2]);
+        }
     }
-}
+
+    void propagate(int ptr, int left, int right){
+        if (lazy[ptr] != -1) {
+            nodes[ptr] = lazy[ptr];  // RMQ  -> update: = lazy[node],                        increment: += lazy[node]
+                                    // RSQ  -> update: = (right - left + 1) * lazy[node],   increment: += (right - left + 1) * lazy[node]
+            if (left != right) {
+                lazy[2 * ptr + 1] = lazy[2 * ptr + 2] = lazy[ptr]; // update: =, increment: +=
+            }
+
+            lazy[ptr] = -1;
+        }
+    }
+
+    void update(int a, int b, int val, int ptr, int left, int right){
+        propagate(ptr, left, right);
+
+        if (right < a || left > b) {
+            return;
+        }
+
+        if (left >= a && right <= b) {
+            lazy[ptr] = single(val);
+            propagate(ptr, left, right);
+        } else {
+            int mid = (right + left) / 2;
+
+            update(a, b, val, 2 * ptr + 1, left, mid);
+            update(a, b, val, 2 * ptr + 2, mid + 1, right);
+
+            nodes[ptr] = nodes[2 * ptr] + nodes[2 * ptr + 1];
+        }
+    }
+
+    Node query(int l, int r, int ptr, int left, int right){
+        propagate(ptr, left, right);
+
+        if (left >= l && right <= r) {
+            return nodes[ptr];
+        }
+
+        int mid = (right + left) / 2;
+
+        if (r <= mid) {
+            return query(l, r, 2 * ptr + 1, left, mid);
+        } else if (l > mid) {
+            return query(l, r, 2 * ptr + 2, mid + 1, right);
+        } else {
+            Node qry1 = query(l, r, 2 * ptr + 1, left, mid);
+            Node qry2 = query(l, r, 2 * ptr + 2, mid + 1, right);
+
+            return merge(qry1, qry2);
+        }
+    }
+};
