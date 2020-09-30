@@ -43,9 +43,16 @@ template <class T> struct Point2D {
 			return ((*this) - s).dist();
 		}
 
-		auto d = (e - s).dist2(), t = min(d, max(.0,((*this) - s).dot(e - s)));
+		auto d = (e - s).dist2();
+        auto t = min(d, max(.0,((*this) - s).dot(e - s)));
 		return (((*this) - s) * d - (e - s) * t).dist() / d;
 	}
+
+    // Returns the signed perpendicular distance between point p and the line containing points a and b.
+    // Positive value on left side and negative on right as seen from a towards b. a==b gives nan.
+    double distanceToLine(Point2D &a, Point2D &b) {
+        return (double)(b - a).cross((*this) - a) / (b - a).dist();
+    }
 
 	// Returns true if p lies within the polygon. 
 	// If strict is true, it returns false for points on the boundary.
@@ -64,6 +71,19 @@ template <class T> struct Point2D {
 		}
 
 		return cnt;
+	}
+
+	// Returns where p is as seen from s towards e. (1/0/-1) ⇔ left/on line/right.
+	// If the optional argument eps is given 0 is returned if p is within distance eps from the line.
+	int sideOf(Point2D s, Point2D e) { 
+		return sgn(s.cross(e, (*this)));
+	}
+
+	int sideOf(Point2D &s, Point2D &e, double eps) {
+		auto a = (e - s).cross((*this) - s);
+		double l = (e - s).dist() * eps;
+
+		return (a > l) - (a < -l);
 	}
 
 	friend ostream& operator << (ostream& os, Point2D p) {
