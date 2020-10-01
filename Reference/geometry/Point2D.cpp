@@ -31,6 +31,10 @@ template <class T> struct Point2D {
 		return Point2D(x * cos(a) - y * sin(a), x * sin(a) + y * cos(a));
 	}
 
+	double distanceToPoint(Point2D b) {
+		return sqrt(((x - b.x) * (x - b.x)) + ((y - b.y) * (y - b.y)));
+	}
+	
 	// Returns true if this point lies on the line segment from point 's' to point'e'
 	// Use (distanceToSegment(s, e) <= EPS) instead when using Point2D<double>.
 	bool onSegment(Point2D s, Point2D e) {
@@ -91,6 +95,24 @@ template <class T> struct Point2D {
 		return os << "(" << p.x << "," << p.y << ")"; 
 	}
 };
+
+//The circumcirle of a triangle is the circle intersecting all three vertices.
+// ccRadius returns the radius of the circle going through points A, B and C.
+double ccRadius(Point2D<double> &A, Point2D<double> &B, Point2D<double> &C) {
+	return (B - A).dist() * (C - B).dist() * (A - C).dist() / abs((B - A).cross(C - A)) / 2;
+}
+
+// ccCenter returns the center of the same circle
+Point2D<double> ccCenter(Point2D<double> &A, Point2D<double> &B, Point2D<double> &C) {
+	Point2D<double> b = C - A, c = B - A;
+	assert(b.cross(c) != 0); // no circumcircle if A,B,C aligned
+	return A + (b * c.dist2() - c * b.dist2()).perp() / b.cross(c) / 2;
+}
+
+// returns true if is collinear or false otherwise
+bool collinear(Point2D<double> p1, Point2D<double> p2, Point2D<double> p3) { 
+    return ((p2.x - p1.x) * (p3.y - p2.y)) == ((p2.y - p1.y) * (p3.x - p2.x));
+}
 
 // Return -1: a < b, 0: a == b, 1: a > b
 int compareFloats(double a, double b, double eps = EPS) {
