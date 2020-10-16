@@ -1,30 +1,38 @@
-int p[MAXN], sz[MAXN], n;
+// Disjoint Set Union / Union-find data structure
+// Complexity: O(α(n)), α = inverse Ackermann function (almost constant) for find and join
+struct DSU {
+    vector<int> parent, sz;
 
-void preprocess() {
-    for (int i = 1; i <= n; i++) {
-        p[i] = i;
-        sz[i] = 0;
-    }
-}
+    DSU(int n) {
+        parent.resize(n);
+        sz.resize(n);
 
-int findSet(int v) {
-    if (p[v] == v) {
-        return v;
+        iota(parent.begin(), parent.end(), 0);
     }
 
-    return p[v] = findSet(p[v]);
-}
+    int find(int u) {
+        return (parent[u] == u ? u : parent[u] = find(parent[u]));
+    }
 
-void unionSet(int a, int b){
-    int u = findSet(a);
-    int v = findSet(b);
+    void join(int u, int v){
+        u = find(u);
+        v = find(v);
 
-    if (u != v) {
-        if (sz[u] < sz[v]) {
-            swap(u, v);
+        if (u != v) {
+            if (sz[u] < sz[v]) {
+                swap(u, v);
+            }
+
+            parent[v] = u;
+            sz[u] += sz[v];
         }
-
-        p[v] = u;
-        sz[u] += sz[v];
     }
-}
+
+    bool insideSameSet(int u, int v) {
+        return find(u) == find(v);
+    }
+
+    int getSize(int u) {
+        return sz[find(u)];
+    }
+};
