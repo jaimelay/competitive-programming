@@ -2,10 +2,10 @@
 // Complexity: O(n + m)
 struct Bridges {
     vector<int> tin, low;
-    int timer;
+    int timer, n;
     map<pair<int, int>, bool> bridges;
 
-    Bridges(int n) {
+    Bridges(int n) : n(n) {
         tin.resize(n);
         low.resize(n);
         timer = 0;
@@ -28,6 +28,14 @@ struct Bridges {
                 if (low[v] > tin[u]) {
                     bridges[{ u, v }] = true;
                 }
+            }
+        }
+    }
+
+    void findBridges() {
+        for (int i = 1; i <= n; i++) {
+            if (!tin[i]) {
+                DFS(i, i);
             }
         }
     }
