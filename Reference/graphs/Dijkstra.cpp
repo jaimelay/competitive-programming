@@ -20,6 +20,7 @@ void dijkstraSparse(int s){
             int w = e.second;
             if (dist[v] > dist[u] + w) {
                 dist[v] = dist[u] + w;
+                parent[v] = u;
                 pq.push({ dist[v], v });
             }
         }
