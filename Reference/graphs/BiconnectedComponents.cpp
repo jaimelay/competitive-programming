@@ -4,8 +4,10 @@
 struct BCC {
     int n, timer, bccnum = 0;
     vector<set<int>> bccs;
+    vector<vector<int>> block_cut;
     vector<int> in, low, vis;
     stack<pair<int, int>> stck;
+    vector<int> articulations;
 
     BCC(int n) : n(n) {
         bccnum = 0;
@@ -14,6 +16,8 @@ struct BCC {
         in.resize(n);
         low.resize(n);
         vis.resize(n);
+        block_cut.resize(n);
+        articulations.clear();
         while (!stck.empty()) stck.pop();
     }
 
@@ -28,7 +32,11 @@ struct BCC {
                     DFS(v, u);
                     low[u] = min(low[u], low[v]);
 
-                    if (low[v] >= in[u]) { // u is articulation
+                    if (low[v] >= in[u]) {
+                        if (in[u] > 1 || in[v] > 2) {
+                            articulations.push_back(u);
+                        }
+
                         while (true) {
                             auto edge = stck.top();
                             stck.pop();
@@ -50,6 +58,20 @@ struct BCC {
                     stck.emplace(v, u);
                 }
             }
+        }
+    }
+
+    void buildBlockCutTree() {
+        int nodes = bccnum;
+
+        for (auto art : articulations) {
+            for (int i = 0; i < bccnum; i++) {
+                if (binary_search(bccs[i].begin(), bccs[i].end(), art)) {
+                    block_cut[nodes].push_back(i);
+                    block_cut[i].push_back(nodes);
+                }
+            }
+            nodes++;
         }
     }
 
