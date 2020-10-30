@@ -24,7 +24,8 @@ struct BCC {
     void DFS(int u, int p = -1) {
         vis[u] = true;
         low[u] = in[u] = timer++;
-
+        int children = 0;
+        
         for (int v : g[u]) {
             if (v != p) {
                 if (!vis[v]) {
@@ -33,9 +34,8 @@ struct BCC {
                     low[u] = min(low[u], low[v]);
 
                     if (low[v] >= in[u]) {
-                        if (in[u] > 1 || in[v] > 2) {
+                        if (p != -1) {
                             is_articulation[u] = true;
-                            bccs[bccnum].push_back(u);
                         }
 
                         while (true) {
@@ -57,11 +57,17 @@ struct BCC {
 
                         bccnum++;
                     }
+
+                    children++;
                 } else if (in[v] < in[u]) {
                     low[u] = min(low[u], in[v]);
                     stck.emplace(v, u);
                 }
             }
+        }
+
+        if (p == -1 && children > 1) {
+            is_articulation[u] = true;
         }
     }
 
