@@ -1,10 +1,9 @@
-// Returns all palindromes substrings, longest palindrome substring, if some range is palindrome.
+// Returns all palindromes substrings, check if some range in string is palindrome.
 // Complexity: O(n)
 struct Manacher {
     int n;
     string s;
     vector<int> odd, even, p;
-    vector<pair<pair<int, int>, string>> palindromes;
 
     Manacher(const string &s) {
         this->s = s;
@@ -41,18 +40,6 @@ struct Manacher {
         }
 
         for (int i = 0; i < n; i++) {
-            if (odd[i]) {
-                int l = i - odd[i] + 1, r = i + odd[i] - 1;
-                palindromes.push_back({{ l, r }, s.substr(l, (l == r ? 1 : (r - l + 1))) });
-            }
-
-            if (even[i]) {
-                int l = i - even[i], r = i + even[i] - 1;
-                palindromes.push_back({{ l, r }, s.substr(l, (l == r ? 1 : (r - l + 1))) });
-            }
-        }
-
-        for (int i = 0; i < n; i++) {
             p[2 * i] = 2 * odd[i] - 1;
         }
 
@@ -70,6 +57,36 @@ struct Manacher {
     }
 
     vector<pair<pair<int, int>, string>> getAllPalindromes() {
+        vector<pair<pair<int, int>, string>> palindromes;
+
+        for (int i = 0; i < n; i++) {
+            if (odd[i]) {
+                int l = i - odd[i] + 1, r = i + odd[i] - 1;
+                palindromes.push_back({{ l, r }, s.substr(l, r - l + 1) });
+            }
+
+            if (even[i]) {
+                int l = i - even[i], r = i + even[i] - 1;
+                palindromes.push_back({{ l, r }, s.substr(l, r - l + 1) });
+            }
+        }
+
         return palindromes;
+    }
+
+    // For starting simply reverse string input and the vector ending.
+    vector<int> getMaxPalindromeEndingInEachIndex() {
+        vector<int> ending(n);
+        ending[0] = 1;
+
+        for (int i = 1; i < n; i++) {
+            ending[i] = min(ending[i - 1] + 2, i + 1);
+            cout << ending[i] << " " << i << endl;
+            while (!isPalindrome(i - ending[i] + 1, i)) {
+                ending[i]--;
+            }
+        }
+
+        return ending;
     }
 };
