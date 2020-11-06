@@ -4,7 +4,7 @@ struct Manacher {
     int n;
     string s;
     vector<int> odd, even, p;
-    vector<pair<int, int>> palindromes;
+    vector<pair<pair<int, int>, string>> palindromes;
 
     Manacher(const string &s) {
         this->s = s;
@@ -42,11 +42,13 @@ struct Manacher {
 
         for (int i = 0; i < n; i++) {
             if (odd[i]) {
-                palindromes.push_back({ i - odd[i] + 1, i + odd[i] - 1 });
+                int l = i - odd[i] + 1, r = i + odd[i] - 1;
+                palindromes.push_back({{ l, r }, s.substr(l, (l == r ? 1 : (r - l + 1))) });
             }
 
             if (even[i]) {
-                palindromes.push_back({ i - even[i], i + even[i] - 1 });
+                int l = i - even[i], r = i + even[i] - 1;
+                palindromes.push_back({{ l, r }, s.substr(l, (l == r ? 1 : (r - l + 1))) });
             }
         }
 
@@ -67,7 +69,7 @@ struct Manacher {
         return *max_element(p.begin(), p.end());
     }
 
-    vector<pair<int, int>> getAllPalindromesIndexes() {
+    vector<pair<pair<int, int>, string>> getAllPalindromes() {
         return palindromes;
     }
 };
