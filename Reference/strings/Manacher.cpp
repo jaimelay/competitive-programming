@@ -1,4 +1,3 @@
-// Returns all palindromes substrings, check if some range in string is palindrome.
 // Complexity: O(n)
 struct Manacher {
     int n;
@@ -81,7 +80,6 @@ struct Manacher {
 
         for (int i = 1; i < n; i++) {
             ending[i] = min(ending[i - 1] + 2, i + 1);
-            cout << ending[i] << " " << i << endl;
             while (!isPalindrome(i - ending[i] + 1, i)) {
                 ending[i]--;
             }
