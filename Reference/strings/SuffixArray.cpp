@@ -35,7 +35,36 @@ vector<int> suffixArray(string s) {
         c.swap(c_new);
     }
 
-    p.erase(p.begin());
+    // p.erase(p.begin());
 
     return p;
+}
+
+// Complexity: O(n)
+vector<int> longestCommonPrefix(string s, vector<int> &suffix_array) {
+    s.push_back('$');
+    int n = (int)s.size();
+    vector<int> pi(n);
+
+    for (int i = 0; i < n; i++) pi[suffix_array[i]] = i;
+    
+    int k = 0;
+    vector<int> lcp(n - 1);
+
+    for (int i = 0; i < n - 1; i++) {
+        if (pi[i] == n - 1) {
+            k = 0;
+            continue;
+        }
+
+        int j = suffix_array[pi[i] + 1];
+        while (i + k < n && j + k < n && s[i + k] == s[j + k]) {
+            k++;
+        }
+
+        lcp[pi[i]] = k;
+        k = max(0, k - 1);
+    }
+
+    return lcp;
 }
