@@ -85,3 +85,26 @@ string longestCommonSubstring(string a, string b) {
     
     return s.substr(idx, lcs);
 }
+
+// Complexity: O(n)
+long long numberOfDifferentSubstrings(string s) {
+    long long n = (long long)s.size();
+    vector<int> suffix_array = suffixArray(s);
+    vector<int> lcp = longestCommonPrefix(s, suffix_array);
+
+    long long cnt = n * (n + 1) / 2;
+    for (int i = 0; i < n; i++) cnt -= lcp[i];
+
+    return cnt;
+}
+
+// Complexity: O(n)
+int longestRepeatedSubstring(string s) {
+    int lrs = 0;
+    vector<int> suffix_array = suffixArray(s);
+    vector<int> lcp = longestCommonPrefix(s, suffix_array);
+
+    for (int i = 0; i < n; i++) lrs = max(lrs, lcp[i]);
+
+    return lrs;
+}
