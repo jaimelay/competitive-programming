@@ -1,5 +1,7 @@
 // Returns a vector that each z[i] is the length of the longest common prefix between s and the suffix of s starting at i.
 // e.g: "aaabaab" - [0,2,1,0,2,1,0]
+// z[i] == n - i -> so the prefix and suffix is the same.
+// Search substring T in S, just concat T + 'some char' + S and search for z[i + length(T) + 1] == length(T), in [i..length(S)].
 // Complexity: O(n)
 vector<int> ZFunction(string s) {
     int n = (int)s.size();
