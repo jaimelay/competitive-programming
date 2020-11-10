@@ -52,19 +52,36 @@ vector<int> longestCommonPrefix(string s, vector<int> &suffix_array) {
     vector<int> lcp(n - 1);
 
     for (int i = 0; i < n - 1; i++) {
-        if (pi[i] == n - 1) {
-            k = 0;
-            continue;
-        }
+        if (pi[i] < n - 1) {
+            int j = suffix_array[pi[i] + 1];
+            while (max(i, j) + k < n && s[i + k] == s[j + k]) {
+                k++;
+            }
 
-        int j = suffix_array[pi[i] + 1];
-        while (i + k < n && j + k < n && s[i + k] == s[j + k]) {
-            k++;
+            lcp[pi[i]] = k;
+            if (k > 0) k--;
         }
-
-        lcp[pi[i]] = k;
-        k = max(0, k - 1);
     }
 
     return lcp;
+}
+
+// To calc LCS for multiple texts use a slide window with minqueue.
+// Complexity: O(n)
+string longestCommonSubstring(string a, string b) {
+    string s = a + '$' + b + '#';
+    vector<int> suffix_array = suffixArray(s);
+    vector<int> lcp = longestCommonPrefix(s, suffix_array);
+    int lcs = 0, idx = -1;
+
+    for (int i = 0; i < (int)s.size(); i++) {
+        if ((suffix_array[i] < (int)a.size()) != (suffix_array[i + 1] < (int)a.size())) {
+            if (lcp[i] > lcs) {
+                lcs = lcp[i];
+                idx = suffix_array[i];
+            }
+        }
+    }
+    
+    return s.substr(idx, lcs);
 }
