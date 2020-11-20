@@ -1,4 +1,4 @@
-long long chinese_remainder(vector<pair<long long, long long>> v) {
+long long chineseRemainder(vector<pair<long long, long long>> v) {
     long long rem = v[0].first, mod = v[0].second;
     long long ans = rem, m = mod;
 
