@@ -1,6 +1,8 @@
 // Primality Test for Large Number
 // Complexity: O(k * log(n)^3)
 bool millerRabin(ull n) {
+	if (n < 2) return false;
+	
 	ull s = __builtin_ctzll(n - 1);
 	ull d = n >> s;
 	ull base[] = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 };
