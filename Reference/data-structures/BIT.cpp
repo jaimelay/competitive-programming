@@ -1,27 +1,45 @@
-// Complexidade:- update -> O(logN)
-//              - query  -> O(logN)
+// Fenwick Tree | Binary Indexed Tree
+// Complexity:- update: O(log(n)); query: O(log(n))
+struct BIT {
+    vector<int> tree;
+    int LOGN = 25;
+    int n;
 
-#define MAXN 1010
+    BIT(int n) : n(n) {
+        tree.resize(n);
+        LOGN = (int)ceil(log2(n));
+    }
 
-int a[MAXN], bit[MAXN], n;
+    void update(int idx, int val) {
+        for (int i = idx; i <= n; i += (i & -i)) {
+            tree[i] += val;
+        }
+    }
 
-void init(){
-    for(int i = 1; i <= n; i++)
-        update(i, a[i]);
-}
+    int query(int idx) {
+        int sum = 0;
+        
+        for (int i = idx; i > 0; i -= (i & -i)) {
+            sum += tree[i];
+        }
 
-void update(int x, int val){
-    for(int i = x; i <= n; i += i & -i)
-        bit[i] += val;
-}
+        return sum;
+    }
 
-int query(int x){
-    int sum = 0;
-    for(int i = x; i > 0; i -= i & -i)
-        sum += bit[i];
-    return sum;
-}
+    int query(int l, int r) {
+        return query(r) - query(l - 1);
+    }
 
-int query(int l, int r){
-    return query(r) - query(l - 1);
-}
+    int lowerBound(int val) {
+        int sum = 0, pos = 0;
+
+        for (int i = LOGN; i >= 0; i--) {
+            if (pos + (1 << i) < n and sum + tree[pos + (1 << i)] < val) {
+                sum += tree[pos + (1 << i)];
+                pos += (1 << i);
+            }
+        }
+
+        return pos + 1;
+    }
+};
