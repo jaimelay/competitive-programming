@@ -1,3 +1,4 @@
+// Complexity: build: O(n * log(n)); query: O(1)
 struct SparseTable {
     int n;
     vector<vector<int>> table;
