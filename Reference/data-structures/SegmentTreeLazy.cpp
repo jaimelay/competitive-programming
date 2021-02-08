@@ -9,7 +9,7 @@ struct SegmentTreeLazy {
     SegmentTreeLazy(int n, vector<long long> &v) {
         size = n;
         nodes.resize(4 * n);
-        lazy.resize(4 * n);
+        lazy.resize(4 * n, { -1 });
         build(v, 0, 0, size);
     }
 
