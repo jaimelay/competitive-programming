@@ -78,7 +78,7 @@ template <class T> struct Point2D {
 		return cnt;
 	}
 
-	// Returns where p is as seen from s towards e. (1/0/-1) ⇔ left/on line/right.
+	// Returns where p is as seen from s towards e. (1/0/-1) -> left/on line/right.
 	// If the optional argument eps is given 0 is returned if p is within distance eps from the line.
 	int sideOf(Point2D s, Point2D e) { 
 		return sgn(s.cross(e, (*this)));

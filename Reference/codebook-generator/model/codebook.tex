@@ -1,26 +1,20 @@
-\documentclass[oneside]{book}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage[brazil,english]{babel}
-\usepackage[a4paper, total={6in, 8in}]{geometry}
+\documentclass[10pt]{article}
+\usepackage[left=0.4in,right=0.4in,top=0.7in,bottom=0.4in]{geometry}
 \usepackage{hyperref}
-\usepackage{graphicx}
 \usepackage{fancyhdr}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{tocloft}
 \usepackage{pdflscape}
 \usepackage{multicol}
-\setlength{\columnseprule}{1pt}
-\def\columnseprulecolor{\color{black}}
 
-\geometry{
-	a4paper,
-	left=10mm,
-	right=10mm,
-	top=0.5in,
-	bottom=0.5in,
-}
+\renewcommand*{\ttdefault}{pcr}
+\renewcommand\cftsecfont{\fontsize{8}{9}\bfseries}
+\renewcommand\cftsecpagefont{\fontsize{8}{9}\mdseries}
+\renewcommand\cftsubsecfont{\fontsize{5}{6}\mdseries}
+\renewcommand\cftsubsecpagefont{\fontsize{5}{6}\mdseries}
+\renewcommand\cftsecafterpnum{\vspace{-1ex}}
+\renewcommand\cftsubsecafterpnum{\vspace{-1ex}}
 
 \lstdefinestyle{shared}{
     belowcaptionskip=1\baselineskip,
@@ -36,8 +30,6 @@
     commentstyle=\itshape\color{red!80!black},
     identifierstyle=\color{blue},
     stringstyle=\color{purple!40!black},
-	basicstyle=\footnotesize,% basic font setting
-    tabsize=3, % tab space width
 }
 \lstdefinestyle{java}{
     style=shared,
@@ -60,32 +52,33 @@
 }
 \lstset{escapechar=@}
 
+\pagestyle{fancy}
+\fancyhead[L]{Rio de Janeiro State University (UERJ)}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+
+\fancypagestyle{plain}
+{
+\fancyhead[L]{Rio de Janeiro State University (UERJ)}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+}
+
+\title{\vspace{-4ex}\Large{Rio de Janeiro State University ICPC Team Codebook (2022)}}
+\author{}
+\date{}
+
 \begin{document}
-\begin{titlepage}
-	\centering
+\begin{landscape}
+\begin{multicols}{2}
 
-	\includegraphics[width=0.20\textwidth]{./uerj-logo.png}\vspace{1.3cm}
-	\includegraphics[width=0.20\textwidth]{./icpc-logo.png}\par\vspace{1.3cm}
-	{\scshape\LARGE UERJ - Universidade do Estado do Rio de Janeiro \par}
-	\vspace{1cm}
-	{\scshape\Large Códigos de Maratona de Programação\par}
-	\vspace{1.5cm}
-	{\huge\bfseries UERJ++\par}
-	\vspace{2cm}
-	{\Large\itshape (Jaime Lay, Vinicius Sathler, Paulo Victor)\par}
-	\vfill
-	coach\par
-	Paulo Eustáquio
-
-	\vfill
-
-% Bottom of the page
-	{\large \today\par}
-\end{titlepage}
+\maketitle
+\vspace{-13ex}
 \tableofcontents
+\pagestyle{fancy}
 
-\input cpp_sheet.tex
-\input help_sheet.tex
 \input contents.tex
 
+\end{multicols}
+\end{landscape}
 \end{document}

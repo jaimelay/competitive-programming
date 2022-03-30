@@ -1,4 +1,4 @@
-// Returns suffixArray that each index of the array is the starting of the suffix which is i’th in the sorted suffix array
+// Returns suffixArray that each index of the array is the starting of the suffix which is ith in the sorted suffix array
 // Complexity: O(n * log(n))
 vector<int> suffixArray(string s) {
     s.push_back('$');

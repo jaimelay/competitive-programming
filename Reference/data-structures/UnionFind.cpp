@@ -1,5 +1,3 @@
-// Disjoint Set Union / Union-find data structure
-// Complexity: O(α(n)), α = inverse Ackermann function (almost constant) for find and join
 struct DSU {
     vector<int> parent, sz;
 

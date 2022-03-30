@@ -1,5 +1,3 @@
-// O(1) para quase todas operações, menos .clear();
-// Caso dê MLE, use a MinQueue com duas stacks.
 struct MinQueue {
     int sz = 0;
     int add_val = 0;
